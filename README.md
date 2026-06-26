@@ -37,6 +37,15 @@ flyaway-app/
 
 ## Running locally
 
+### 0. Configure secrets
+Secrets are not stored in the repo. Copy the template and fill it in:
+```bash
+cp .env.example .env        # set DB_PASSWORD and JWT_SECRET
+```
+`docker compose` reads `.env` automatically. The backend services read the same
+values from their environment (`DB_PASSWORD`, `DB_USERNAME`, `JWT_SECRET`), so
+export them in your shell or IDE run configurations before starting a service.
+
 ### 1. Start infrastructure
 ```bash
 docker compose up -d        # Postgres (:5433), Kafka (:9092), pgAdmin (:5050)
