@@ -2,6 +2,7 @@ package com.voyage.payment_service.controller;
 
 import com.voyage.payment_service.dto.PaymentRequest;
 import com.voyage.payment_service.dto.PaymentResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +16,7 @@ import java.util.Random;
 @RequestMapping("/api/payments")
 public class PaymentController {
     @PostMapping("/process")
-    public ResponseEntity<PaymentResponse> processPayment(@RequestBody PaymentRequest paymentDetails) {
+    public ResponseEntity<PaymentResponse> processPayment(@Valid @RequestBody PaymentRequest paymentDetails) {
         boolean paymentSuccess = new Random().nextBoolean();
 
         if (paymentSuccess) {
