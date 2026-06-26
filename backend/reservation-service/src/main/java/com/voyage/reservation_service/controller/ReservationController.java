@@ -4,6 +4,7 @@ import com.voyage.reservation_service.dto.ReservationRequest;
 import com.voyage.reservation_service.model.Reservation;
 import com.voyage.reservation_service.model.ReservationStatus;
 import com.voyage.reservation_service.service.ReservationService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class ReservationController {
     private static final Logger log = LoggerFactory.getLogger(ReservationController.class);
 
     @PostMapping
-    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationRequest reservationRequest) {
+    public ResponseEntity<Reservation> createReservation(@Valid @RequestBody ReservationRequest reservationRequest) {
         try{
             Reservation reservation = reservationService.createReservation(reservationRequest);
 

@@ -2,6 +2,7 @@ package com.voyage.flight_service.controller;
 
 import com.voyage.flight_service.model.Flight;
 import com.voyage.flight_service.repository.FlightRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class FlightController {
     private FlightRepository flightRepository;
 
     @PostMapping
-    public ResponseEntity<Flight> createFlight(@RequestBody Flight flight) {
+    public ResponseEntity<Flight> createFlight(@Valid @RequestBody Flight flight) {
         Flight savedFlight = flightRepository.save(flight);
         return new ResponseEntity<>(savedFlight, HttpStatus.CREATED);
     }

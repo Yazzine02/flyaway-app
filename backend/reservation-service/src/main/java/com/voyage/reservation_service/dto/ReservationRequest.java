@@ -1,18 +1,28 @@
 package com.voyage.reservation_service.dto;
 
 import com.voyage.reservation_service.model.FlightClass;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class ReservationRequest {
+    @NotNull
     private Long userId;
+
+    @NotNull
     private Long flightId;
+
+    // Optional: null for flight-only bookings
     private Long hotelId;
 
+    @Min(1)
     private int flightPassengers = 1;
+
+    @Min(1)
     private int hotelPassengers = 1;
 
-    // --- NEW FIELD ---
+    @Min(1)
     private int numberOfNights = 1;
 
     private FlightClass flightClass = FlightClass.BASIC;

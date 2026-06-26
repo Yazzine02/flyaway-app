@@ -2,6 +2,7 @@ package com.voyage.hotel_service.controller;
 
 import com.voyage.hotel_service.model.Hotel;
 import com.voyage.hotel_service.repository.HotelRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class HotelController {
     private HotelRepository hotelRepository;
 
     @PostMapping
-    public ResponseEntity<Hotel> createHotel(@RequestBody Hotel hotel) {
+    public ResponseEntity<Hotel> createHotel(@Valid @RequestBody Hotel hotel) {
         Hotel savedHotel = hotelRepository.save(hotel);
         return new ResponseEntity<>(savedHotel, HttpStatus.CREATED);
     }

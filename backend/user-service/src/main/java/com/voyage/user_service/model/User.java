@@ -2,6 +2,8 @@ package com.voyage.user_service.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,9 +19,15 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incrementing ID
     private Long id;
 
+    @NotBlank
     private String username;
+
+    @Email
     private String email;
+
+    @NotBlank
     private String password;
+
     private String role;
 
     @Override
