@@ -6,15 +6,20 @@
     </a>
 
     <nav class="ml-8 hidden items-center gap-1 md:flex">
-      <a mat-button routerLink="/" routerLinkActive="text-sky-600" [routerLinkActiveOptions]="{ exact: true }">Flights</a>
+      <a mat-button routerLink="/flights" routerLinkActive="text-sky-600">Flights</a>
       <a mat-button routerLink="/" routerLinkActive="text-sky-600">Hotels</a>
       <a mat-button routerLink="/" routerLinkActive="text-sky-600">Deals</a>
     </nav>
 
     <span class="flex-1"></span>
 
-    <a mat-button class="!hidden sm:!inline-block">Sign in</a>
-    <a mat-flat-button color="primary" class="!ml-2">Register</a>
+    @if (auth.isAuthenticated()) {
+      <span class="mr-3 hidden text-sm text-slate-600 sm:inline">Hi, {{ auth.username() }}</span>
+      <button mat-stroked-button (click)="logout()">Logout</button>
+    } @else {
+      <a mat-button routerLink="/login" class="!hidden sm:!inline-block">Sign in</a>
+      <a mat-flat-button color="primary" routerLink="/register" class="!ml-2">Register</a>
+    }
   </mat-toolbar>
 
   <main class="flex-1">
