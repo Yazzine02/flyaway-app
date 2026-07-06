@@ -1,5 +1,6 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Home } from './home';
 
@@ -7,7 +8,7 @@ describe('Home', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Home],
-      providers: [provideZonelessChangeDetection(), provideNoopAnimations()],
+      providers: [provideZonelessChangeDetection(), provideRouter([]), provideNoopAnimations()],
     }).compileComponents();
   });
 

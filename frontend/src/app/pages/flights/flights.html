@@ -1,0 +1,68 @@
+<div class="mx-auto max-w-5xl px-4 py-8">
+  <!-- Search summary -->
+  <div class="mb-6 flex flex-wrap items-center gap-3">
+    <a routerLink="/" mat-icon-button aria-label="Back"><mat-icon>arrow_back</mat-icon></a>
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">
+        @if (departure() && destination()) {
+          {{ departure() }} → {{ destination() }}
+        } @else {
+          All flights
+        }
+      </h1>
+      @if (date()) {
+        <p class="text-sm text-slate-500">{{ date() | date: 'fullDate' }}</p>
+      }
+    </div>
+  </div>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  @if (error()) {
+    <div class="rounded-xl bg-red-50 p-6 text-center text-red-600">
+      <mat-icon>error_outline</mat-icon>
+      <p class="mt-1">{{ error() }}</p>
+      <button mat-stroked-button color="primary" class="!mt-3" (click)="load()">Retry</button>
+    </div>
+  }
+
+  @if (!loading() && !error()) {
+    @if (flights().length === 0) {
+      <div class="rounded-xl bg-slate-50 p-10 text-center text-slate-500">
+        <mat-icon class="!h-12 !w-12 !text-5xl text-slate-300">flight</mat-icon>
+        <p class="mt-2 font-medium">No flights found</p>
+        <p class="text-sm">Try a different route or date.</p>
+      </div>
+    } @else {
+      <div class="flex flex-col gap-4">
+        @for (f of flights(); track f.id) {
+          <mat-card class="!rounded-2xl !shadow-sm ring-1 ring-slate-100">
+            <mat-card-content class="!flex !flex-wrap !items-center !justify-between !gap-4 !p-5">
+              <div class="flex items-center gap-4">
+                <div class="grid h-12 w-12 place-items-center rounded-full bg-sky-50 text-sky-600">
+                  <mat-icon>flight</mat-icon>
+                </div>
+                <div>
+                  <p class="font-semibold text-slate-800">{{ f.flightName }}</p>
+                  <p class="text-sm text-slate-500">{{ f.departure }} → {{ f.destination }}</p>
+                </div>
+              </div>
+
+              <div class="text-sm text-slate-600">
+                <p>{{ f.departureDate | date: 'MMM d, HH:mm' }}</p>
+                <p class="text-slate-400">to {{ f.arrivalDate | date: 'MMM d, HH:mm' }}</p>
+              </div>
+
+              <div class="flex items-center gap-4">
+                <span class="text-xl font-bold text-sky-600">{{ f.price | currency: 'USD' }}</span>
+                <button mat-flat-button color="primary">Book</button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    }
+  }
+</div>

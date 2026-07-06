@@ -1,0 +1,42 @@
+<div class="mx-auto flex min-h-[70vh] max-w-md items-center px-4">
+  <mat-card class="w-full !rounded-2xl !shadow-xl">
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <mat-card-content class="!p-8">
+      <div class="mb-6 text-center">
+        <mat-icon class="!h-10 !w-10 !text-4xl text-sky-600">flight_takeoff</mat-icon>
+        <h1 class="mt-2 text-2xl font-bold text-slate-800">Welcome back</h1>
+        <p class="text-slate-500">Sign in to continue your journey.</p>
+      </div>
+
+      <form (ngSubmit)="submit()" class="flex flex-col gap-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput name="username" required autocomplete="username"
+                 [ngModel]="username()" (ngModelChange)="username.set($event)" />
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" name="password" required autocomplete="current-password"
+                 [ngModel]="password()" (ngModelChange)="password.set($event)" />
+          <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
+
+        @if (error()) {
+          <p class="mb-2 text-sm text-red-600">{{ error() }}</p>
+        }
+
+        <button mat-flat-button color="primary" type="submit" class="!h-11" [disabled]="loading()">
+          Sign in
+        </button>
+      </form>
+
+      <p class="mt-6 text-center text-sm text-slate-500">
+        No account? <a routerLink="/register" class="font-medium text-sky-600 hover:underline">Create one</a>
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -27,6 +28,8 @@ interface Destination {
   styleUrl: './home.scss',
 })
 export class Home {
+  private readonly router = inject(Router);
+
   protected readonly mode = signal<'flights' | 'hotels'>('flights');
 
   protected readonly origin = signal('');
@@ -40,8 +43,18 @@ export class Home {
     { city: 'Marrakech', country: 'Morocco', price: 175, image: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=800&q=60' },
   ];
 
-  // Flight search is wired to the backend in a later feature.
   search(): void {
-    console.log('search', this.mode(), this.origin(), this.destination(), this.date());
+    if (this.mode() === 'flights') {
+      this.router.navigate(['/flights'], {
+        queryParams: {
+          departure: this.origin() || null,
+          destination: this.destination() || null,
+          date: this.date() || null,
+        },
+      });
+    } else {
+      // Hotel search lands on the same results view for now.
+      this.router.navigate(['/flights']);
+    }
   }
 }

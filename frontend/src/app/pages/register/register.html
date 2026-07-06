@@ -1,0 +1,49 @@
+<div class="mx-auto flex min-h-[70vh] max-w-md items-center px-4">
+  <mat-card class="w-full !rounded-2xl !shadow-xl">
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <mat-card-content class="!p-8">
+      <div class="mb-6 text-center">
+        <mat-icon class="!h-10 !w-10 !text-4xl text-sky-600">person_add</mat-icon>
+        <h1 class="mt-2 text-2xl font-bold text-slate-800">Create your account</h1>
+        <p class="text-slate-500">Join FlyAway and start booking.</p>
+      </div>
+
+      <form (ngSubmit)="submit()" class="flex flex-col gap-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput name="username" required autocomplete="username"
+                 [ngModel]="username()" (ngModelChange)="username.set($event)" />
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" name="email" required autocomplete="email"
+                 [ngModel]="email()" (ngModelChange)="email.set($event)" />
+          <mat-icon matSuffix>mail</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" name="password" required autocomplete="new-password"
+                 [ngModel]="password()" (ngModelChange)="password.set($event)" />
+          <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
+
+        @if (error()) {
+          <p class="mb-2 text-sm text-red-600">{{ error() }}</p>
+        }
+
+        <button mat-flat-button color="primary" type="submit" class="!h-11" [disabled]="loading()">
+          Create account
+        </button>
+      </form>
+
+      <p class="mt-6 text-center text-sm text-slate-500">
+        Already have an account? <a routerLink="/login" class="font-medium text-sky-600 hover:underline">Sign in</a>
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>
