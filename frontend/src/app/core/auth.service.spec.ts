@@ -46,4 +46,11 @@ describe('AuthService', () => {
     expect(service.getToken()).toBeNull();
     expect(service.isAuthenticated()).toBe(false);
   });
+
+  it('decodes userId from the JWT payload', () => {
+    const token = `header.${btoa(JSON.stringify({ userId: 42, sub: 'alice' }))}.sig`;
+    service.login({ username: 'alice', password: 'pw' }).subscribe();
+    http.expectOne('/api/auth/login').flush({ token });
+    expect(service.userId()).toBe(42);
+  });
 });

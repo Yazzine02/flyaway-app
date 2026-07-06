@@ -15,6 +15,7 @@ export class AuthService {
   private readonly _token = signal<string | null>(this.read(TOKEN_KEY));
   readonly username = signal<string | null>(this.read(USER_KEY));
   readonly isAuthenticated = computed(() => !!this._token());
+  readonly userId = computed(() => this.decodeUserId(this._token()));
 
   login(req: AuthRequest): Observable<AuthResponse> {
     return this.http
@@ -35,6 +36,20 @@ export class AuthService {
 
   getToken(): string | null {
     return this._token();
+  }
+
+  // Reads the userId claim from the JWT payload.
+  private decodeUserId(token: string | null): number | null {
+    if (!token) {
+      return null;
+    }
+    try {
+      const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      const payload = JSON.parse(atob(base64)) as { userId?: number };
+      return payload.userId ?? null;
+    } catch {
+      return null;
+    }
   }
 
   private setSession(token: string, username: string): void {
