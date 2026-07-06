@@ -23,3 +23,39 @@ export interface Flight {
   arrivalDate: string;
   price: number;
 }
+
+export interface Hotel {
+  id: number;
+  name: string;
+  city: string;
+  price: number;
+}
+
+export type FlightClass = 'BASIC' | 'FLEX' | 'SUPER_FLEX';
+
+export const FLIGHT_CLASS_CHARGE: Record<FlightClass, number> = {
+  BASIC: 0,
+  FLEX: 200,
+  SUPER_FLEX: 600,
+};
+
+export type ReservationStatus = 'PENDING_PAYMENT' | 'CONFIRMED' | 'CANCELLED' | 'FAILED';
+
+export interface ReservationRequest {
+  userId: number;
+  flightId?: number | null;
+  hotelId?: number | null;
+  flightPassengers?: number;
+  hotelPassengers?: number;
+  numberOfNights?: number;
+  flightClass?: FlightClass;
+}
+
+export interface Reservation {
+  id: number;
+  userId: number;
+  flightId: number | null;
+  hotelId: number | null;
+  status: ReservationStatus;
+  totalPrice: number;
+}

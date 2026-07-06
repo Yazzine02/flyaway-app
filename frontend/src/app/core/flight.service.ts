@@ -18,4 +18,8 @@ export class FlightService {
   getAll(): Observable<Flight[]> {
     return this.http.get<Flight[]>('/api/flights');
   }
+
+  getById(id: number): Observable<Flight> {
+    return this.http.get<Flight>(`/api/flights/${id}`);
+  }
 }

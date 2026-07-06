@@ -10,10 +10,9 @@ public class ReservationRequest {
     @NotNull
     private Long userId;
 
-    @NotNull
+    // flightId or hotelId (at least one required; enforced in the service)
     private Long flightId;
 
-    // Optional: null for flight-only bookings
     private Long hotelId;
 
     @Min(1)

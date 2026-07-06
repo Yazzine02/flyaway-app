@@ -53,8 +53,9 @@ export class Home {
         },
       });
     } else {
-      // Hotel search lands on the same results view for now.
-      this.router.navigate(['/flights']);
+      this.router.navigate(['/hotels'], {
+        queryParams: { city: this.destination() || null },
+      });
     }
   }
 }

@@ -57,7 +57,8 @@
 
               <div class="flex items-center gap-4">
                 <span class="text-xl font-bold text-sky-600">{{ f.price | currency: 'USD' }}</span>
-                <button mat-flat-button color="primary">Book</button>
+                <a mat-flat-button color="primary"
+                   [routerLink]="['/booking']" [queryParams]="{ type: 'flight', flightId: f.id }">Book</a>
               </div>
             </mat-card-content>
           </mat-card>
