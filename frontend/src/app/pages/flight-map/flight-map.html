@@ -1,0 +1,30 @@
+<div class="mx-auto max-w-6xl px-4 py-8">
+  <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Live flight map</h1>
+      <p class="text-sm text-slate-500">
+        Real aircraft positions from the OpenSky Network — pan or zoom to explore.
+      </p>
+    </div>
+    <div class="flex items-center gap-3">
+      @if (updatedAt(); as t) {
+        <span class="text-sm text-slate-500">
+          <span class="font-semibold text-sky-600">{{ count() }}</span> aircraft · updated {{ t | date: 'HH:mm:ss' }}
+        </span>
+      }
+      <button mat-stroked-button color="primary" (click)="refresh()" [disabled]="loading()">
+        <mat-icon>refresh</mat-icon> Refresh
+      </button>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" class="!mb-2"></mat-progress-bar>
+  }
+
+  @if (error()) {
+    <div class="mb-3 rounded-lg bg-amber-50 p-3 text-sm text-amber-700">{{ error() }}</div>
+  }
+
+  <div #mapEl class="z-0 h-[70vh] w-full overflow-hidden rounded-2xl shadow-md ring-1 ring-slate-200"></div>
+</div>

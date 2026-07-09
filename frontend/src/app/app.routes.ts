@@ -38,5 +38,10 @@ export const routes: Routes = [
     canActivate: [authGuard],
     title: 'My bookings — FlyAway',
   },
+  {
+    path: 'map',
+    loadComponent: () => import('./pages/flight-map/flight-map').then((m) => m.FlightMap),
+    title: 'Live flight map — FlyAway',
+  },
   { path: '**', redirectTo: '' },
 ];

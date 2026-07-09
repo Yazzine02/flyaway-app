@@ -3,5 +3,11 @@
     "target": "http://localhost:9090",
     "secure": false,
     "changeOrigin": true
+  },
+  "/opensky": {
+    "target": "https://opensky-network.org",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": { "^/opensky": "/api" }
   }
 }
