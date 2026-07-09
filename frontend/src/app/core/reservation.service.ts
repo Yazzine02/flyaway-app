@@ -11,4 +11,9 @@ export class ReservationService {
   create(request: ReservationRequest): Observable<Reservation> {
     return this.http.post<Reservation>('/api/reservations', request);
   }
+
+  // Booking history for the authenticated user (identity from the JWT).
+  getMine(): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>('/api/reservations/mine');
+  }
 }

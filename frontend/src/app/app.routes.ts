@@ -32,5 +32,11 @@ export const routes: Routes = [
     canActivate: [authGuard],
     title: 'Booking — FlyAway',
   },
+  {
+    path: 'bookings',
+    loadComponent: () => import('./pages/bookings/bookings').then((m) => m.Bookings),
+    canActivate: [authGuard],
+    title: 'My bookings — FlyAway',
+  },
   { path: '**', redirectTo: '' },
 ];
