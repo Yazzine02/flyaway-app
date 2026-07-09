@@ -30,4 +30,13 @@ describe('ReservationService', () => {
     expect(req.request.body).toEqual(payload);
     req.flush({ id: 10, userId: 1, flightId: null, hotelId: 7, status: 'CONFIRMED', totalPrice: 900 });
   });
+
+  it('fetches the current user bookings', () => {
+    let result: unknown;
+    service.getMine().subscribe((r) => (result = r));
+    const req = http.expectOne('/api/reservations/mine');
+    expect(req.request.method).toBe('GET');
+    req.flush([{ id: 1, status: 'CONFIRMED', totalPrice: 320 }]);
+    expect((result as unknown[]).length).toBe(1);
+  });
 });

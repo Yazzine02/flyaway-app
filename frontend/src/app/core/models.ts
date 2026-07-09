@@ -57,5 +57,9 @@ export interface Reservation {
   flightId: number | null;
   hotelId: number | null;
   status: ReservationStatus;
+  flightPassengers: number;
+  hotelPassengers: number;
+  flightClass: FlightClass | null;
   totalPrice: number;
+  date: string;
 }

@@ -1,0 +1,61 @@
+<div class="mx-auto max-w-3xl px-4 py-8">
+  <div class="mb-6 flex items-center gap-3">
+    <a routerLink="/" mat-icon-button aria-label="Back"><mat-icon>arrow_back</mat-icon></a>
+    <h1 class="text-2xl font-bold text-slate-800">My bookings</h1>
+  </div>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  @if (error()) {
+    <div class="rounded-xl bg-red-50 p-6 text-center text-red-600">
+      <mat-icon>error_outline</mat-icon>
+      <p class="mt-1">{{ error() }}</p>
+      <button mat-stroked-button color="primary" class="!mt-3" (click)="load()">Retry</button>
+    </div>
+  }
+
+  @if (!loading() && !error()) {
+    @if (reservations().length === 0) {
+      <div class="rounded-xl bg-slate-50 p-10 text-center text-slate-500">
+        <mat-icon class="!h-12 !w-12 !text-5xl text-slate-300">luggage</mat-icon>
+        <p class="mt-2 font-medium">No bookings yet</p>
+        <p class="text-sm">Your trips will appear here once you book.</p>
+        <a routerLink="/flights" mat-flat-button color="primary" class="!mt-4">Find a flight</a>
+      </div>
+    } @else {
+      <div class="flex flex-col gap-4">
+        @for (r of reservations(); track r.id) {
+          <mat-card class="!rounded-2xl !shadow-sm ring-1 ring-slate-100">
+            <mat-card-content class="!flex !items-center !justify-between !gap-4 !p-5">
+              <div class="flex items-center gap-4">
+                <div class="grid h-12 w-12 place-items-center rounded-full"
+                     [class]="r.flightId ? 'bg-sky-50 text-sky-600' : 'bg-cyan-50 text-cyan-600'">
+                  <mat-icon>{{ r.flightId ? 'flight' : 'hotel' }}</mat-icon>
+                </div>
+                <div>
+                  <p class="font-semibold text-slate-800">
+                    Reservation #{{ r.id }}
+                    @if (r.flightId) { · Flight #{{ r.flightId }} }
+                    @if (r.hotelId) { · Hotel #{{ r.hotelId }} }
+                  </p>
+                  <p class="text-sm text-slate-500">
+                    {{ r.date | date: 'medium' }}
+                    @if (r.flightId && r.flightClass) { · {{ r.flightClass }} }
+                  </p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="text-lg font-bold text-sky-600">{{ r.totalPrice | currency: 'USD' }}</p>
+                <span class="rounded-full px-2 py-0.5 text-xs font-medium" [class]="statusClass(r.status)">
+                  {{ r.status }}
+                </span>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    }
+  }
+</div>
