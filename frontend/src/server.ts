@@ -13,16 +13,22 @@ const app = express();
 const angularApp = new AngularNodeAppEngine();
 
 /**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/{*splat}', (req, res) => {
- *   // Handle API request
- * });
- * ```
+ * OpenSky proxy: their API blocks cross-origin browser calls, so the client
+ * requests /opensky/* same-origin and we forward it here (prod SSR server).
+ * In development ng serve does the same via proxy.conf.json.
  */
+app.get('/opensky/states/all', async (req, res) => {
+  const url = new URL('https://opensky-network.org/api/states/all');
+  for (const [key, value] of Object.entries(req.query)) {
+    url.searchParams.set(key, String(value));
+  }
+  try {
+    const upstream = await fetch(url);
+    res.status(upstream.status).json(await upstream.json());
+  } catch {
+    res.status(502).json({ error: 'OpenSky unavailable' });
+  }
+});
 
 /**
  * Serve static files from /browser
