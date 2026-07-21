@@ -14,8 +14,11 @@ export class AuthService {
 
   private readonly _token = signal<string | null>(this.read(TOKEN_KEY));
   readonly username = signal<string | null>(this.read(USER_KEY));
-  readonly isAuthenticated = computed(() => !!this._token());
-  readonly userId = computed(() => this.decodeUserId(this._token()));
+  readonly userId = computed(() => this.decodePayload(this._token())?.userId ?? null);
+  readonly isAuthenticated = computed(() => {
+    const token = this._token();
+    return !!token && !this.isExpired(token);
+  });
 
   login(req: AuthRequest): Observable<AuthResponse> {
     return this.http
@@ -38,18 +41,23 @@ export class AuthService {
     return this._token();
   }
 
-  // Reads the userId claim from the JWT payload.
-  private decodeUserId(token: string | null): number | null {
+  // Decodes the JWT payload; returns null for a missing or malformed token.
+  private decodePayload(token: string | null): { userId?: number; exp?: number } | null {
     if (!token) {
       return null;
     }
     try {
       const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-      const payload = JSON.parse(atob(base64)) as { userId?: number };
-      return payload.userId ?? null;
+      return JSON.parse(atob(base64));
     } catch {
       return null;
     }
+  }
+
+  // Only treats a token as expired when it carries an exp claim in the past.
+  private isExpired(token: string): boolean {
+    const exp = this.decodePayload(token)?.exp;
+    return exp != null && exp * 1000 <= Date.now();
   }
 
   private setSession(token: string, username: string): void {
