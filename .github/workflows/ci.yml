@@ -23,10 +23,10 @@ jobs:
           java-version: '17'
           cache: maven
 
-      - name: Build reactor
-        # Integration-style context tests need infra (DB/Kafka/config-server),
-        # so they are skipped here; replace with Testcontainers tests later.
-        run: ./mvnw -B -ntp clean package -DskipTests
+      - name: Build and test reactor
+        # Runs unit tests; the generated *ApplicationTests smoke tests are
+        # excluded (they need DB/Kafka/config-server) via the parent POM.
+        run: ./mvnw -B -ntp clean verify
 
   frontend:
     name: Frontend (build & test)

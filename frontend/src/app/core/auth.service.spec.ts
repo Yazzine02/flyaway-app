@@ -53,4 +53,20 @@ describe('AuthService', () => {
     http.expectOne('/api/auth/login').flush({ token });
     expect(service.userId()).toBe(42);
   });
+
+  it('treats a token with a past exp as unauthenticated', () => {
+    const past = Math.floor(Date.now() / 1000) - 60;
+    const token = `header.${btoa(JSON.stringify({ userId: 1, exp: past }))}.sig`;
+    service.login({ username: 'alice', password: 'pw' }).subscribe();
+    http.expectOne('/api/auth/login').flush({ token });
+    expect(service.isAuthenticated()).toBe(false);
+  });
+
+  it('treats a token with a future exp as authenticated', () => {
+    const future = Math.floor(Date.now() / 1000) + 3600;
+    const token = `header.${btoa(JSON.stringify({ userId: 1, exp: future }))}.sig`;
+    service.login({ username: 'alice', password: 'pw' }).subscribe();
+    http.expectOne('/api/auth/login').flush({ token });
+    expect(service.isAuthenticated()).toBe(true);
+  });
 });

@@ -52,4 +52,21 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<build>
+		<plugins>
+			<plugin>
+				<!-- The generated *ApplicationTests smoke tests boot the full context
+				     (config-server, DB, Kafka) and cannot run in unit CI; exclude them
+				     so real unit tests run instead. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/*ApplicationTests.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
